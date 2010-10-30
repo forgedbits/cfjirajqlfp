@@ -1,0 +1,32 @@
+
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+	<plugin-info>
+		<description>${project.description}</description>
+		<version>${project.version}</version>
+		<vendor name="${project.organization.name}" url="${project.organization.url}" />
+	</plugin-info>
+	
+	<resource type="i18n" name="i18n" location="org.craftforge.jira.jql.craftforge-jql-functions-plugin" />
+
+	<jql-function key="linked-issues-from-fitler" i18n-name-key="linked-issues-from-fitler.name" 
+	name="Linked Issues From Filter Function" class="org.craftforge.jira.jql.LinkedIssuesFromFilterFunction">
+		<description key="linked-issues-from-fitler.description">
+			JQL function to return issues linked by a specified relation with returned by a specified saved filter.
+		</description>
+	</jql-function>
+	
+	<jql-function key="subtasks-from-fitler" i18n-name-key="subtasks-from-fitler.name" 
+	name="Subtask From Filter Function" class="org.craftforge.jira.jql.SubtaskIssuesFromFilterFunction">
+		<description key="subtasks-from-fitler.description">
+			JQL function to return subtasks of issues returned by a specified saved filter.
+		</description>
+	</jql-function>
+	
+	<jql-function key="parents-from-fitler" i18n-name-key="parents-from-fitler.name" 
+	name="Parent Issues From Filter Function" class="org.craftforge.jira.jql.ParentIssuesFromFilterFunction">
+		<description key="parents-from-fitler.description">
+			JQL function to return parent isssues of issues returned by a specified saved filter.
+		</description>
+	</jql-function>
+
+</atlassian-plugin>
