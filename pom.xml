@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.craftforge.jira</groupId>
 	<artifactId>craftforge-jql-functions-plugin</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 
 	<organization>
 		<name>Craftware Sp. z o.o.</name>
@@ -21,6 +19,20 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	
+	<distributionManagement>
+		<repository>
+			<id>craftforge</id>
+			<name>Craftforge</name>
+			<url>dav:https://dev.craftware.pl/mvn/craftforge</url>
+		</repository>
+	</distributionManagement>
+	
+	<scm>
+		<connection>scm:svn:https://dev.craftware.pl/svn/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.0.0</connection>
+		<developerConnection>scm:svn:https://dev.craftware.pl/svn/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.0.0</developerConnection>
+		<url>https://dev.craftware.pl/svn/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.0.0</url>
+	</scm>
 
 	<name>Craftforge JQL Functions Plugin</name>
 	<description>Plugin to allow creating subqueries in JQL using saved filters.</description>
