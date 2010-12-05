@@ -87,6 +87,12 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 				return request;
 			}
 		}
+        filters = searchRequestService.getOwnedFilters(user);
+		for (SearchRequest request : filters) {
+			if (request.getName().equals(filter) || request.getId().toString().equals(filter)) {
+				return request;
+			}
+		}
 		return null;
 	}
 
