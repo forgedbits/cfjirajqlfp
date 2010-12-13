@@ -82,12 +82,7 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 
 	private SearchRequest fetchFilter(final User user, final String filter) {
 		Collection<SearchRequest> filters = searchRequestService.getNonPrivateFilters(user);
-		for (SearchRequest request : filters) {
-			if (request.getName().equals(filter) || request.getId().toString().equals(filter)) {
-				return request;
-			}
-		}
-        filters = searchRequestService.getOwnedFilters(user);
+        filters.addAll(searchRequestService.getOwnedFilters(user)); //private
 		for (SearchRequest request : filters) {
 			if (request.getName().equals(filter) || request.getId().toString().equals(filter)) {
 				return request;
