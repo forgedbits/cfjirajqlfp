@@ -24,14 +24,14 @@
 		<repository>
 			<id>craftforge</id>
 			<name>Craftforge</name>
-			<url>dav:https://dev.craftware.pl/mvn/craftforge</url>
+			<url>dav:https://mvn.craftware.pl/craftforge</url>
 		</repository>
 	</distributionManagement>
 	
 	<scm>
-		<connection>scm:svn:https://dev.craftware.pl/svn/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</connection>
-		<developerConnection>scm:svn:https://dev.craftware.pl/svn/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</developerConnection>
-		<url>https://dev.craftware.pl/svn/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</url>
+		<connection>scm:svn:https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</connection>
+		<developerConnection>scm:svn:https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</developerConnection>
+		<url>https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</url>
 	</scm>
 
 	<name>Craftforge JQL Functions Plugin</name>
