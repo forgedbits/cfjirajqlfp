@@ -21,6 +21,7 @@ import com.atlassian.jira.JiraDataType;
 import com.atlassian.jira.JiraDataTypes;
 import com.atlassian.jira.bc.JiraServiceContextImpl;
 import com.atlassian.jira.bc.filter.SearchRequestService;
+import com.atlassian.jira.exception.PermissionException;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchProvider;
@@ -79,15 +80,24 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
             messages.addErrorMessage(i18nHelper.getText("abstract-issues-from-filter.bad.num.arguments", operand.getName()));
         }
         if (savedFilterIsInvalid(user, args.get(0))) {
-            messages.addErrorMessage(i18nHelper.getText("abstract-issues-from-filter.bad.saved.filter", args.get(0)));
+            messages.addErrorMessage(i18nHelper.getText("abstract-issues-from-filter.bad.saved.filter", args.get(0), user.getName()));
         }
         return messages;
     }
 
-    private SearchRequest fetchFilter(final User user, final String filter) {
-        SearchRequest result = tryToFetchById(user,filter);
-        if (result != null)
+    private SearchRequest fetchFilter(final User user, final String filter) throws PermissionException {
+        SearchRequest request = findFilter(user, filter);
+        if (request == null) {
+            throw new PermissionException(i18nHelper.getText("abstract-issues-from-filter.bad.saved.filter", filter, user.getName()));
+        }
+        return request;
+    }
+
+    private SearchRequest findFilter(final User user, final String filter) throws IllegalArgumentException {
+        SearchRequest result = tryToFetchById(user, filter);
+        if (result != null) {
             return result;
+        }
         return tryToFetchByName(user, filter);
     }
 
@@ -98,7 +108,7 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
         return consumer.getFound();
     }
 
-    protected List<Issue> fetchIssuesFromSubfilter(QueryCreationContext qcc, FunctionOperand fo) {
+    protected List<Issue> fetchIssuesFromSubfilter(QueryCreationContext qcc, FunctionOperand fo) throws PermissionException {
         try {
             SearchRequest request = fetchFilter(qcc.getUser(), fo.getArgs().get(0));
             List<Issue> issues = searchProvider.search(request.getQuery(), qcc.getUser(), PagerFilter.getUnlimitedFilter()).getIssues();
@@ -109,7 +119,7 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
     }
 
     protected boolean savedFilterIsInvalid(final User user, final String filter) {
-        return fetchFilter(user, filter) == null;
+        return findFilter(user, filter) == null;
     }
 
     protected List<QueryLiteral> convertToQueryLiteraCollection(final FunctionOperand operand,
@@ -127,8 +137,9 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
     }
 
     private SearchRequest tryToFetchById(User user, String filter) {
-        if (!filter.matches("\\d+"))
+        if (!filter.matches("\\d+")) {
             return null;
+        }
         return searchRequestService.getFilter(new JiraServiceContextImpl(user), Long.valueOf(filter));
     }
 
