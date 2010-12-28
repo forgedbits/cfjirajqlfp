@@ -108,12 +108,12 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
         return consumer.getFound();
     }
 
-    protected List<Issue> fetchIssuesFromSubfilter(QueryCreationContext qcc, FunctionOperand fo) throws PermissionException {
+    protected List<Issue> fetchIssuesFromSubfilter(QueryCreationContext qcc, FunctionOperand fo) {
         try {
             SearchRequest request = fetchFilter(qcc.getUser(), fo.getArgs().get(0));
             List<Issue> issues = searchProvider.search(request.getQuery(), qcc.getUser(), PagerFilter.getUnlimitedFilter()).getIssues();
             return issues;
-        } catch (SearchException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
