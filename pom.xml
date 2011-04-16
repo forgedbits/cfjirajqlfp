@@ -64,7 +64,7 @@
 			<plugin>
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<artifactId>maven-jira-plugin</artifactId>
-				<version>3.2</version>
+				<version>3.3</version>
 				<extensions>true</extensions>
 				<configuration>
 					<productVersion>${jira.version}</productVersion>
@@ -82,8 +82,8 @@
 	</build>
 
 	<properties>
-		<jira.version>4.1.2</jira.version>
-		<jira.data.version>4.1.1</jira.data.version>
+		<jira.version>4.3.2</jira.version>
+		<jira.data.version>4.3.2</jira.data.version>
 	</properties>
 
 </project>
