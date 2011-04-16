@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.craftforge.jira</groupId>
 	<artifactId>craftforge-jql-functions-plugin</artifactId>
-	<version>1.1.2-SNAPSHOT</version>
+	<version>1.1.2</version>
 
 	<organization>
 		<name>Craftware Sp. z o.o.</name>
@@ -29,9 +29,9 @@
 	</distributionManagement>
 	
 	<scm>
-		<connection>scm:svn:https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</connection>
-		<developerConnection>scm:svn:https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</developerConnection>
-		<url>https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.0</url>
+		<connection>scm:svn:https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.2</connection>
+		<developerConnection>scm:svn:https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.2</developerConnection>
+		<url>https://svn.craftware.pl/craftforge/jira/craftforge-jql-functions-plugin/tags/craftforge-jql-functions-plugin-1.1.2</url>
 	</scm>
 
 	<name>Craftforge JQL Functions Plugin</name>
