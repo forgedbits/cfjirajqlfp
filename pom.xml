@@ -29,9 +29,9 @@
 	</distributionManagement>
 	
 	<scm>
-		<connection>scm:git:https://git.craftware.pl/repos/cfjirajqlfp.git</connection>
-		<developerConnection>scm:git:https://git.craftware.pl/repos/cfjirajqlfp.git</developerConnection>
-		<url>https://git.craftware.pl/repos/cfjirajqlfp.git</url>
+		<connection>scm:git:http://git.craftforge.org/repos/cfjirajqlfp.git</connection>
+		<developerConnection>scm:git:https://git.craftforge.org/repos/cfjirajqlfp.git</developerConnection>
+		<url>https://git.craftforge.org/repos/cfjirajqlfp.git</url>
 	</scm>
 
 	<name>Craftforge JQL Functions Plugin</name>
