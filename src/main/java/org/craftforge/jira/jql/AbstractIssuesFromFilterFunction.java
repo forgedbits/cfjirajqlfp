@@ -160,7 +160,7 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 		}
 
 		public void consume(SearchRequest t) {
-			if (t.getName().equals(name)) {
+			if (t.getName().equalsIgnoreCase(name)) {
 				found = t;
 			}
 		}
