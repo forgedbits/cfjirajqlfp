@@ -16,41 +16,24 @@
  */
 package org.craftforge.jira.jql;
 
-import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.jql.operand.QueryLiteral;
-import com.atlassian.jira.jql.query.QueryCreationContext;
-import com.atlassian.query.clause.TerminalClause;
-import com.atlassian.query.operand.FunctionOperand;
-import com.opensymphony.user.User;
-import java.util.ArrayList;
-import java.util.List;
+import com.atlassian.jira.ComponentManager;
+import com.atlassian.jira.plugin.jql.function.JqlFunctionModuleDescriptor;
+import org.craftforge.jira.jql.query.QueryFromFilterProvider;
+import org.craftforge.jira.jql.query.QueryProvider;
 
 /**
  *
  * @author pbojko
  */
-public class SubtaskIssuesFromFilterFunction extends AbstractIssuesFromFilterFunction {
+public class SubtaskIssuesFromFilterFunction extends AbstractSubtaskIssuesFunction {
+
+	@Override
+	protected QueryProvider createQueryProvider(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager) {
+		return new QueryFromFilterProvider(componentManager.getSearchRequestService(), moduleDescriptor.getI18nBean());
+	}
 
 	@Override
 	public String getFunctionName() {
 		return "subtaskIssuesFromFilter";
-	}
-
-	public List<QueryLiteral> getValues(QueryCreationContext qcc, FunctionOperand fo, TerminalClause tc) {
-		List<Issue> issues = fetchIssuesFromSubfilter(qcc, fo);
-		issues = fetchSubtasks(qcc.getUser(), issues);
-		return convertToQueryLiteraCollection(fo, issues);
-	}
-
-	public int getMinimumNumberOfExpectedArguments() {
-		return 1;
-	}
-
-	private List<Issue> fetchSubtasks(User user, List<Issue> issues) {
-		List<Issue> result = new ArrayList<Issue>();
-		for (Issue issue : issues) {
-			result.addAll(issue.getSubTaskObjects());
-		}
-		return result;
 	}
 }

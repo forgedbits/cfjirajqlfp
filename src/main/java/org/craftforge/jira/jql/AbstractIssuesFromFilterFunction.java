@@ -19,109 +19,79 @@ package org.craftforge.jira.jql;
 import com.atlassian.jira.ComponentManager;
 import com.atlassian.jira.JiraDataType;
 import com.atlassian.jira.JiraDataTypes;
-import com.atlassian.jira.bc.JiraServiceContextImpl;
-import com.atlassian.jira.bc.filter.SearchRequestService;
-import com.atlassian.jira.exception.PermissionException;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchProvider;
-import com.atlassian.jira.issue.search.SearchRequest;
 import com.atlassian.jira.jql.operand.QueryLiteral;
 import com.atlassian.jira.jql.query.QueryCreationContext;
 import com.atlassian.jira.plugin.jql.function.AbstractJqlFunction;
 import com.atlassian.jira.plugin.jql.function.JqlFunctionModuleDescriptor;
-import com.atlassian.jira.sharing.search.SharedEntitySearchParameters;
-import com.atlassian.jira.sharing.search.SharedEntitySearchParametersBuilder;
-import com.atlassian.jira.sharing.search.SharedEntitySearchResult;
-import com.atlassian.jira.util.Consumer;
 import com.atlassian.jira.util.I18nHelper;
 import com.atlassian.jira.util.MessageSet;
 import com.atlassian.jira.util.MessageSetImpl;
 import com.atlassian.jira.web.bean.PagerFilter;
+import com.atlassian.query.Query;
 import com.atlassian.query.clause.TerminalClause;
 import com.atlassian.query.operand.FunctionOperand;
 import com.opensymphony.user.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.craftforge.jira.jql.query.QueryProvider;
 
 /**
  *
  * @author pbojko
  */
 public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFunction {
+	
+	private QueryProvider queryProvider;
 
-	protected SearchRequestService searchRequestService;
+	private SearchProvider searchProvider;
 
-	protected SearchProvider searchProvider;
-
-	protected I18nHelper i18nHelper;
+	private I18nHelper i18nHelper;
 
 	public JiraDataType getDataType() {
 		return JiraDataTypes.ISSUE;
 	}
 
 	@Override
-	public void init(JqlFunctionModuleDescriptor moduleDescriptor) {
+	public final void init(JqlFunctionModuleDescriptor moduleDescriptor) {
 		super.init(moduleDescriptor);
 		ComponentManager componentManager = ComponentManager.getInstance();
-		searchRequestService = componentManager.getSearchRequestService();
 		searchProvider = componentManager.getSearchProvider();
 		i18nHelper = moduleDescriptor.getI18nBean();
+		this.queryProvider = createQueryProvider(moduleDescriptor, componentManager);
+		init(moduleDescriptor, componentManager);
 	}
+	
+	protected abstract void init(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager);
+	
+	protected abstract QueryProvider createQueryProvider(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager);
 
 	@Override
 	public boolean isList() {
 		return true;
 	}
 
-	public MessageSet validate(User user, FunctionOperand operand, TerminalClause tc) {
+	@Override
+	public MessageSet validate(com.opensymphony.user.User user, FunctionOperand operand, TerminalClause tc) {
 		MessageSet messages = new MessageSetImpl();
 		final List<String> args = operand.getArgs();
 		if (args.isEmpty()) {
 			messages.addErrorMessage(i18nHelper.getText("abstract-issues-from-filter.bad.num.arguments", operand.getName()));
 		}
-		if (savedFilterIsInvalid(user, args.get(0))) {
-			messages.addErrorMessage(i18nHelper.getText("abstract-issues-from-filter.bad.saved.filter", args.get(0), userName(user)));
-		}
 		return messages;
 	}
 
-	private SearchRequest fetchFilter(final User user, final String filter) throws PermissionException {
-		SearchRequest request = findFilter(user, filter);
-		if (request == null) {
-			throw new PermissionException(i18nHelper.getText("abstract-issues-from-filter.bad.saved.filter", filter, userName(user)));
-		}
-		return request;
-	}
-
-	private SearchRequest findFilter(final User user, final String filter) throws IllegalArgumentException {
-		SearchRequest result = tryToFetchById(user, filter);
-		if (result != null) {
-			return result;
-		}
-		return tryToFetchByName(user, filter);
-	}
-
-	private SearchRequest tryToFetchByName(final User user, final String filter) throws IllegalArgumentException {
-		SharedEntitySearchResult<SearchRequest> searchResult = searchRequestService.search(new JiraServiceContextImpl(user), prepareSharedEntirySearchParameyer(filter), 0, 100);
-		SearchRequestByNameConsumer consumer = new SearchRequestByNameConsumer(filter);
-		searchResult.foreach(consumer);
-		return consumer.getFound();
-	}
-
-	protected List<Issue> fetchIssuesFromSubfilter(QueryCreationContext qcc, FunctionOperand fo) {
+	protected List<Issue> findIssues(QueryCreationContext qcc, FunctionOperand fo) {
 		try {
-			SearchRequest request = fetchFilter(qcc.getUser(), fo.getArgs().get(0));
-			List<Issue> issues = searchProvider.search(request.getQuery(), qcc.getUser(), PagerFilter.getUnlimitedFilter()).getIssues();
+			Query query = queryProvider.provide(qcc.getQueryUser(), fo.getArgs().get(0));
+			List<Issue> issues = searchProvider.search(query, qcc.getQueryUser(), PagerFilter.getUnlimitedFilter()).getIssues();
 			return issues;
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-	}
-
-	protected boolean savedFilterIsInvalid(final User user, final String filter) {
-		return findFilter(user, filter) == null;
 	}
 
 	protected List<QueryLiteral> convertToQueryLiteraCollection(final FunctionOperand operand,
@@ -133,40 +103,4 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 		return result;
 	}
 
-	private SharedEntitySearchParameters prepareSharedEntirySearchParameyer(String filter) {
-		return new SharedEntitySearchParametersBuilder().setName(filter).toSearchParameters();
-
-	}
-
-	private SearchRequest tryToFetchById(User user, String filter) {
-		if (!filter.matches("\\d+")) {
-			return null;
-		}
-		return searchRequestService.getFilter(new JiraServiceContextImpl(user), Long.valueOf(filter));
-	}
-
-	private String userName(final User user) {
-		return user != null ? user.getName() : "";
-	}
-
-	private static class SearchRequestByNameConsumer implements Consumer<SearchRequest> {
-
-		private String name;
-
-		private SearchRequest found = null;
-
-		public SearchRequestByNameConsumer(String name) {
-			this.name = name;
-		}
-
-		public void consume(SearchRequest t) {
-			if (t.getName().equalsIgnoreCase(name)) {
-				found = t;
-			}
-		}
-
-		public SearchRequest getFound() {
-			return found;
-		}
-	}
 }
