@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.craftforge.jira</groupId>
 	<artifactId>craftforge-jql-functions-plugin</artifactId>
-	<version>1.2.1-SNAPSHOT</version>
+	<version>1.2.0-SNAPSHOT</version>
 
 	<organization>
 		<name>Craftware Sp. z o.o.</name>
@@ -29,9 +29,9 @@
 	</distributionManagement>
 	
 	<scm>
-		<connection>scm:git:http://git.craftforge.org/repos/cfjirajqlfp.git</connection>
-		<developerConnection>scm:git:http://git.craftforge.org/repos/cfjirajqlfp.git</developerConnection>
-		<url>http://git.craftforge.org/repos/cfjirajqlfp.git</url>
+		<connection>scm:git:http://git.craftforge.org/repos/jira/cfjirajqlfp.git</connection>
+		<developerConnection>scm:git:http://git.craftforge.org/repos/jira/cfjirajqlfp.git</developerConnection>
+		<url>http://git.craftforge.org/repos/jira/cfjirajqlfp.git</url>
 	</scm>
 
 	<name>Craftforge JQL Functions Plugin</name>
