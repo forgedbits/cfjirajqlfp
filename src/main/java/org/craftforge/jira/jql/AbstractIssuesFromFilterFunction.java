@@ -16,11 +16,11 @@
  */
 package org.craftforge.jira.jql;
 
+import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.ComponentManager;
 import com.atlassian.jira.JiraDataType;
 import com.atlassian.jira.JiraDataTypes;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchProvider;
 import com.atlassian.jira.jql.operand.QueryLiteral;
 import com.atlassian.jira.jql.query.QueryCreationContext;
@@ -33,7 +33,6 @@ import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.query.Query;
 import com.atlassian.query.clause.TerminalClause;
 import com.atlassian.query.operand.FunctionOperand;
-import com.opensymphony.user.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -74,7 +73,6 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 		return true;
 	}
 
-	@Override
 	public MessageSet validate(com.opensymphony.user.User user, FunctionOperand operand, TerminalClause tc) {
 		MessageSet messages = new MessageSetImpl();
 		final List<String> args = operand.getArgs();
@@ -83,7 +81,7 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 		}
 		return messages;
 	}
-
+	
 	protected List<Issue> findIssues(QueryCreationContext qcc, FunctionOperand fo) {
 		try {
 			Query query = queryProvider.provide(qcc.getQueryUser(), fo.getArgs().get(0));
