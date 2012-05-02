@@ -75,14 +75,17 @@ public class QueryFromFilterProvider implements QueryProvider {
 	}
 
 	private SearchRequest tryToFetchByName(final User user, final String filter) throws IllegalArgumentException {
-		SharedEntitySearchResult<SearchRequest> searchResult = searchRequestService.search(new JiraServiceContextImpl(user), prepareSharedEntirySearchParameyer(filter), 0, 100);
+		SharedEntitySearchResult<SearchRequest> searchResult =
+				searchRequestService.search(new JiraServiceContextImpl(user), prepareSharedEntirySearchParameyer(filter), 0, 100);
 		SearchRequestByNameConsumer consumer = new SearchRequestByNameConsumer(filter);
 		searchResult.foreach(consumer);
 		return consumer.getFound();
 	}
 
 	private SharedEntitySearchParameters prepareSharedEntirySearchParameyer(String filter) {
-		return new SharedEntitySearchParametersBuilder().setName(filter).toSearchParameters();
+		return new SharedEntitySearchParametersBuilder().setName(filter).
+				setTextSearchMode(SharedEntitySearchParameters.TextSearchMode.EXACT).
+				toSearchParameters();
 	}
 
 	private static class SearchRequestByNameConsumer implements Consumer<SearchRequest> {
