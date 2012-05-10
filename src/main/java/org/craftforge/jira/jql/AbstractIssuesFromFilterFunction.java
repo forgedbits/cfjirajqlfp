@@ -73,7 +73,7 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 		return true;
 	}
 
-	public MessageSet validate(com.opensymphony.user.User user, FunctionOperand operand, TerminalClause tc) {
+	public MessageSet validate(User user, FunctionOperand operand, TerminalClause tc) {
 		MessageSet messages = new MessageSetImpl();
 		final List<String> args = operand.getArgs();
 		if (args.isEmpty()) {

@@ -82,8 +82,8 @@
 	</build>
 
 	<properties>
-		<jira.version>4.3.3</jira.version>
-        <jira.data.version>4.3.3</jira.data.version>
+		<jira.version>5.0</jira.version>
+        <jira.data.version>5.0</jira.data.version>
 	</properties>
 
 </project>
