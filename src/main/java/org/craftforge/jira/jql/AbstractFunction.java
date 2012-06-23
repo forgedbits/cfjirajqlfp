@@ -42,8 +42,8 @@ import org.craftforge.jira.jql.query.QueryProvider;
  *
  * @author pbojko
  */
-public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFunction {
-	
+public abstract class AbstractFunction extends AbstractJqlFunction {
+
 	private QueryProvider queryProvider;
 
 	private SearchProvider searchProvider;
@@ -63,9 +63,9 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 		this.queryProvider = createQueryProvider(moduleDescriptor, componentManager);
 		init(moduleDescriptor, componentManager);
 	}
-	
+
 	protected abstract void init(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager);
-	
+
 	protected abstract QueryProvider createQueryProvider(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager);
 
 	@Override
@@ -81,13 +81,16 @@ public abstract class AbstractIssuesFromFilterFunction extends AbstractJqlFuncti
 		}
 		return messages;
 	}
-	
+
 	protected List<Issue> findIssues(QueryCreationContext qcc, FunctionOperand fo) {
 		try {
 			Query query = queryProvider.provide(qcc.getQueryUser(), fo.getArgs().get(0));
+			QueryLocalGate.enter(query);
 			List<Issue> issues = searchProvider.search(query, qcc.getQueryUser(), PagerFilter.getUnlimitedFilter()).getIssues();
+			QueryLocalGate.leave(query);
 			return issues;
 		} catch (Exception ex) {
+			QueryLocalGate.clear();
 			throw new RuntimeException(ex);
 		}
 	}

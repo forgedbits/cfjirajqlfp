@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.craftforge.jira.jql;
+package org.craftforge.jira.jql.linkedissues;
 
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.ComponentManager;
@@ -26,6 +26,7 @@ import com.atlassian.jira.plugin.jql.function.JqlFunctionModuleDescriptor;
 import com.atlassian.query.clause.TerminalClause;
 import com.atlassian.query.operand.FunctionOperand;
 import java.util.*;
+import org.craftforge.jira.jql.AbstractFunction;
 import org.craftforge.jira.jql.linkedissues.collectors.InwardLinkedIssueCollector;
 import org.craftforge.jira.jql.linkedissues.collectors.LinkedIssueCollector;
 import org.craftforge.jira.jql.linkedissues.collectors.NoSpecificLinkedIssueCollector;
@@ -35,10 +36,10 @@ import org.craftforge.jira.jql.linkedissues.collectors.OutwardLinkedIssueCollect
  *
  * @author pbojko
  */
-public abstract class AbstractLinkedIssuesFunction extends AbstractIssuesFromFilterFunction {
+public abstract class AbstractLinkedIssuesFunction extends AbstractFunction {
 
 	private IssueLinkManager issueLinkManager;
-	
+
 	private Collection<LinkedIssueCollector> collectors = new LinkedList<LinkedIssueCollector>();
 
 	public AbstractLinkedIssuesFunction() {
@@ -46,7 +47,7 @@ public abstract class AbstractLinkedIssuesFunction extends AbstractIssuesFromFil
 		collectors.add(new InwardLinkedIssueCollector());
 		collectors.add(new OutwardLinkedIssueCollector());
 	}
-	
+
 	@Override
 	protected final void init(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager) {
 		issueLinkManager = componentManager.getIssueLinkManager();
@@ -64,7 +65,7 @@ public abstract class AbstractLinkedIssuesFunction extends AbstractIssuesFromFil
 		return convertToQueryLiteraCollection(fo, issues);
 	}
 
-	
+
 	private String fetchParameter(FunctionOperand fo, int index) {
 		return fo.getArgs().size() > index ? fo.getArgs().get(index) : null;
 	}
@@ -84,5 +85,5 @@ public abstract class AbstractLinkedIssuesFunction extends AbstractIssuesFromFil
 	private Collection<Issue> nullSafeCollection(Collection<Issue> issues) {
 		return issues == null ? Collections.<Issue>emptyList() : issues;
 	}
-	
+
 }

@@ -14,27 +14,26 @@
  * limitations under the License.
  * under the License.
  */
-package org.craftforge.jira.jql;
+package org.craftforge.jira.jql.subtaskissues;
 
 import com.atlassian.jira.ComponentManager;
 import com.atlassian.jira.plugin.jql.function.JqlFunctionModuleDescriptor;
-import org.craftforge.jira.jql.query.QueryFromJQLStringProvider;
+import org.craftforge.jira.jql.query.QueryFromFilterProvider;
 import org.craftforge.jira.jql.query.QueryProvider;
 
 /**
  *
  * @author pbojko
  */
-public class ParentIssuesFromQueryFunction extends AbstractParenIssuesFunction {
-
-	@Override
-	public String getFunctionName() {
-		return "parentIssuesFromQuery";
-	}
+public class SubtaskIssuesFromFilterFunction extends AbstractSubtaskIssuesFunction {
 
 	@Override
 	protected QueryProvider createQueryProvider(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager) {
-		return new QueryFromJQLStringProvider();
+		return new QueryFromFilterProvider(componentManager.getSearchRequestService(), moduleDescriptor.getI18nBean());
 	}
 
+	@Override
+	public String getFunctionName() {
+		return "subtaskIssuesFromFilter";
+	}
 }

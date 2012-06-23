@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.craftforge.jira.jql;
+package org.craftforge.jira.jql.subtaskissues;
 
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.ComponentManager;
@@ -25,12 +25,13 @@ import com.atlassian.query.clause.TerminalClause;
 import com.atlassian.query.operand.FunctionOperand;
 import java.util.ArrayList;
 import java.util.List;
+import org.craftforge.jira.jql.AbstractFunction;
 
 /**
  *
  * @author pbojko
  */
-public abstract class AbstractSubtaskIssuesFunction extends AbstractIssuesFromFilterFunction {
+public abstract class AbstractSubtaskIssuesFunction extends AbstractFunction {
 
 	@Override
 	protected final void init(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager) {

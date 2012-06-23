@@ -14,7 +14,7 @@
  * limitations under the License.
  * under the License.
  */
-package org.craftforge.jira.jql;
+package org.craftforge.jira.jql.linkedissues;
 
 import com.atlassian.jira.ComponentManager;
 import com.atlassian.jira.plugin.jql.function.JqlFunctionModuleDescriptor;
@@ -25,16 +25,15 @@ import org.craftforge.jira.jql.query.QueryProvider;
  *
  * @author pbojko
  */
-public class ParentIssuesFromFilterFunction extends AbstractParenIssuesFunction {
-
-	@Override
-	public String getFunctionName() {
-		return "parentIssuesFromFilter";
-	}
+public class LinkedIssuesFromFilterFunction extends AbstractLinkedIssuesFunction {
 
 	@Override
 	protected QueryProvider createQueryProvider(JqlFunctionModuleDescriptor moduleDescriptor, ComponentManager componentManager) {
-		return new QueryFromFilterProvider(componentManager.getSearchRequestService(), moduleDescriptor.getI18nBean());
+		return new QueryFromFilterProvider(componentManager.getSearchRequestService() ,moduleDescriptor.getI18nBean());
 	}
 
+	@Override
+	public String getFunctionName() {
+		return "linkedIssuesFromFilter";
+	}
 }

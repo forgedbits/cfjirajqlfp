@@ -49,9 +49,7 @@ public class QueryFromFilterProvider implements QueryProvider {
 
 	private SearchRequest fetchFilter(final User user, final String filter) throws PermissionException {
 		SearchRequest request = findFilter(user, filter);
-		if (request == null) {
-			throw new PermissionException(i18nHelper.getText("query-from-filter-provider.bad.saved.filter", filter, userName(user)));
-		}
+		verifyFilterOk(request, filter, user);
 		return request;
 	}
 
@@ -86,6 +84,12 @@ public class QueryFromFilterProvider implements QueryProvider {
 		return new SharedEntitySearchParametersBuilder().setName(filter).
 				setTextSearchMode(SharedEntitySearchParameters.TextSearchMode.EXACT).
 				toSearchParameters();
+	}
+
+	private void verifyFilterOk(SearchRequest request, final String filter, final User user) throws PermissionException {
+		if (request == null) {
+			throw new PermissionException(i18nHelper.getText("query-from-filter-provider.bad.saved.filter", filter, userName(user)));
+		}
 	}
 
 	private static class SearchRequestByNameConsumer implements Consumer<SearchRequest> {

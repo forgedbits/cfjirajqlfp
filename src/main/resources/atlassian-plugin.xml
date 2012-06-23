@@ -5,46 +5,46 @@
 		<version>${project.version}</version>
 		<vendor name="${project.organization.name}" url="${project.organization.url}" />
 	</plugin-info>
-	
+
 	<resource type="i18n" name="i18n" location="org.craftforge.jira.jql.craftforge-jql-functions-plugin" />
 
-	<jql-function key="linked-issues-from-fitler" i18n-name-key="linked-issues-from-fitler.name" 
-	name="Linked Issues From Filter Function" class="org.craftforge.jira.jql.LinkedIssuesFromFilterFunction">
+	<jql-function key="linked-issues-from-fitler" i18n-name-key="linked-issues-from-fitler.name"
+	name="Linked Issues From Filter Function" class="org.craftforge.jira.jql.linkedissues.LinkedIssuesFromFilterFunction">
 		<description key="linked-issues-from-fitler.description">
 			Returns issues linked by a specified relation with those from a specified saved filter.
 		</description>
 	</jql-function>
-	
-	<jql-function key="linked-issues-from-query" i18n-name-key="linked-issues-from-query.name" 
-	name="Linked Issues From Query" class="org.craftforge.jira.jql.LinkedIssuesFromQueryFunction">
+
+	<jql-function key="linked-issues-from-query" i18n-name-key="linked-issues-from-query.name"
+	name="Linked Issues From Query" class="org.craftforge.jira.jql.linkedissues.LinkedIssuesFromQueryFunction">
 		<description key="linked-issues-from-query.description">
 			Returns issues linked by a specified relation with those from a provided jql subquery.
 		</description>
 	</jql-function>
-	
-	<jql-function key="subtasks-from-fitler" i18n-name-key="subtasks-from-fitler.name" 
-	name="Subtask From Filter Function" class="org.craftforge.jira.jql.SubtaskIssuesFromFilterFunction">
+
+	<jql-function key="subtasks-from-fitler" i18n-name-key="subtasks-from-fitler.name"
+	name="Subtask From Filter Function" class="org.craftforge.jira.jql.subtaskissues.SubtaskIssuesFromFilterFunction">
 		<description key="subtasks-from-fitler.description">
 			Returns subtasks of issues returned by a specified saved filter.
 		</description>
 	</jql-function>
-	
-	<jql-function key="subtasks-from-query" i18n-name-key="subtasks-from-query.name" 
-	name="Subtasks From Query" class="org.craftforge.jira.jql.SubtaskIssuesFromQueryFunction">
+
+	<jql-function key="subtasks-from-query" i18n-name-key="subtasks-from-query.name"
+	name="Subtasks From Query" class="org.craftforge.jira.jql.subtaskissues.SubtaskIssuesFromQueryFunction">
 		<description key="subtasks-from-query.description">
 			Returns subtasks of issues returned by a specified jql subquery.
 		</description>
 	</jql-function>
-	
-	<jql-function key="parents-from-fitler" i18n-name-key="parents-from-fitler.name" 
-	name="Parent Issues From Filter Function" class="org.craftforge.jira.jql.ParentIssuesFromFilterFunction">
+
+	<jql-function key="parents-from-fitler" i18n-name-key="parents-from-fitler.name"
+	name="Parent Issues From Filter Function" class="org.craftforge.jira.jql.parentissues.ParentIssuesFromFilterFunction">
 		<description key="parents-from-fitler.description">
 			Returns parent issses of issues returned by a specified saved filter.
 		</description>
 	</jql-function>
-	
-	<jql-function key="parents-from-query" i18n-name-key="parents-from-query.name" 
-	name="Parent Issues From Query" class="org.craftforge.jira.jql.ParentIssuesFromQueryFunction">
+
+	<jql-function key="parents-from-query" i18n-name-key="parents-from-query.name"
+	name="Parent Issues From Query" class="org.craftforge.jira.jql.parentissues.ParentIssuesFromQueryFunction">
 		<description key="parents-from-Queryr.description">
 			Returns parent issues of issues returned by a specified jql subquery.
 		</description>
