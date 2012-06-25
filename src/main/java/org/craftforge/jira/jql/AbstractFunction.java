@@ -20,6 +20,7 @@ import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.ComponentManager;
 import com.atlassian.jira.JiraDataType;
 import com.atlassian.jira.JiraDataTypes;
+import com.atlassian.jira.JiraException;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.search.SearchProvider;
 import com.atlassian.jira.jql.operand.QueryLiteral;
@@ -35,14 +36,19 @@ import com.atlassian.query.clause.TerminalClause;
 import com.atlassian.query.operand.FunctionOperand;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.craftforge.jira.jql.query.QueryProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author pbojko
  */
 public abstract class AbstractFunction extends AbstractJqlFunction {
+
+	private static final Logger log = LoggerFactory.getLogger(AbstractFunction.class);
 
 	private QueryProvider queryProvider;
 
@@ -89,10 +95,13 @@ public abstract class AbstractFunction extends AbstractJqlFunction {
 			List<Issue> issues = searchProvider.search(query, qcc.getQueryUser(), PagerFilter.getUnlimitedFilter()).getIssues();
 			QueryLocalGate.leave(query);
 			return issues;
+		} catch (JiraException ex) {
+			log.error(i18nHelper.getText(ex.getMessage()));
 		} catch (Exception ex) {
 			QueryLocalGate.clear();
-			throw new RuntimeException(ex);
+			log.error("Error during function call", ex);
 		}
+		return Collections.<Issue>emptyList();
 	}
 
 	protected List<QueryLiteral> convertToQueryLiteraCollection(final FunctionOperand operand,
@@ -103,5 +112,4 @@ public abstract class AbstractFunction extends AbstractJqlFunction {
 		}
 		return result;
 	}
-
 }
